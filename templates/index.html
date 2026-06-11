@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>AI Assistant</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<div class="chat-container">
+
+<div class="header">AI Assistant</div>
+
+<div id="chatbox"></div>
+
+<div class="input-area">
+<input id="userInput" placeholder="Send a message..." />
+<button onclick="sendMessage()">Send</button>
+</div>
+
+</div>
+
+<script>
+
+let input = document.getElementById("userInput")
+
+input.addEventListener("keypress", function(event){
+if(event.key==="Enter"){
+sendMessage()
+}
+})
+
+function sendMessage(){
+
+let text = input.value.trim()
+
+if(text==="") return
+
+addMessage(text,"user")
+
+fetch("/get",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({message:text})
+})
+.then(res=>res.json())
+.then(data=>{
+addMessage(data.reply,"bot")
+})
+
+input.value=""
+
+}
+
+function addMessage(text,type){
+
+let chatbox=document.getElementById("chatbox")
+
+let msg=document.createElement("div")
+
+msg.classList.add("message")
+
+if(type==="user"){
+msg.classList.add("user")
+}else{
+msg.classList.add("bot")
+}
+
+msg.innerText=text
+
+chatbox.appendChild(msg)
+
+chatbox.scrollTop=chatbox.scrollHeight
+
+}
+
+</script>
+
+</body>
+</html>
