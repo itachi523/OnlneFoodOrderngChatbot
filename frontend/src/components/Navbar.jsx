@@ -5,6 +5,7 @@ import { AppContext } from '../context/AppContext';
 import './Navbar.css';
 import './NavbarExtra.css';
 
+
 const Navbar = () => {
   const { user, logout, cart } = useContext(AppContext);
   const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
@@ -43,6 +44,9 @@ const Navbar = () => {
             <span>Cart</span>
             {cartItemCount > 0 && <span className="cart-badge">{cartItemCount}</span>}
           </Link>
+          <Link to="/admin-login" className="nav-item">
+  Admin
+</Link>
         </nav>
       </div>
     </header>
